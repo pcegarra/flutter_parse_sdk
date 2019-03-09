@@ -13,7 +13,7 @@ Want to get involved? Join our Slack channel and help out! (http://flutter-parse
 To install, either add to your pubspec.yaml
 ```
 dependencies:  
-    parse_server_sdk: ^1.0.10
+    parse_server_sdk: ^1.0.12
 ```
 or clone this repository and add to your project. As this is an early development with multiple contributors, it is probably best to download/clone and keep updating as an when a new feature is added.
 
@@ -33,8 +33,11 @@ Parse().initialize(
         ApplicationConstants.keyApplicationId,
         ApplicationConstants.keyParseServerUrl,
         masterKey: ApplicationConstants.keyParseMasterKey,
-       debug: true,
-        liveQuery: true);
+        clientKey: ApplicationConstants.keyParseClientKey,
+        debug: true,
+        liveQuery: true,
+        autoSendSessionId: true,
+        securityContext: securityContext);
 ```
 
 ## Queries
@@ -51,7 +54,7 @@ var apiResponse = await ParseObject('ParseTableName').getAll();
 Or you can get an object by its objectId:
 
 ```
-var dietPlan = await DietPlan().get('R5EonpUDWy');
+var dietPlan = await DietPlan().getObject('R5EonpUDWy');
 
     if (dietPlan.success) {
       print(ApplicationConstants.keyAppName + ": " + (dietPlan.result as DietPlan).toString());

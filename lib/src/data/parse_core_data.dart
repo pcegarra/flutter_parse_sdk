@@ -11,14 +11,25 @@ class ParseCoreData {
   /// This class should not be user unless switching servers during the app,
   /// which is odd. Should only be user by Parse.init
   static void init(appId, serverUrl,
-      {debug, appName, liveQueryUrl, masterKey, sessionId}) {
+      {debug,
+      appName,
+      liveQueryUrl,
+      masterKey,
+      clientKey,
+      sessionId,
+      autoSendSessionId,
+      securityContext}) {
     _instance = ParseCoreData._init(appId, serverUrl);
 
     if (debug != null) _instance.debug = debug;
     if (appName != null) _instance.appName = appName;
     if (liveQueryUrl != null) _instance.liveQueryURL = liveQueryUrl;
+    if (clientKey != null) _instance.clientKey = clientKey;
     if (masterKey != null) _instance.masterKey = masterKey;
     if (sessionId != null) _instance.sessionId = sessionId;
+    if (autoSendSessionId != null)
+      _instance.autoSendSessionId = autoSendSessionId;
+    if (securityContext != null) _instance.securityContext = securityContext;
   }
 
   String appName;
@@ -26,12 +37,14 @@ class ParseCoreData {
   String serverUrl;
   String liveQueryURL;
   String masterKey;
+  String clientKey;
   String sessionId;
+  bool autoSendSessionId;
+  SecurityContext securityContext;
   bool debug;
   SharedPreferences storage;
 
-  ParseCoreData._init(this.applicationId,
-      this.serverUrl);
+  ParseCoreData._init(this.applicationId, this.serverUrl);
 
   factory ParseCoreData() => _instance;
 
@@ -43,12 +56,8 @@ class ParseCoreData {
     this.sessionId = sessionId;
   }
 
-  void initStorage() async {
-    storage = await SharedPreferences.getInstance();
-  }
-
   Future<SharedPreferences> getStore() async {
-    return storage != null ? storage : await SharedPreferences.getInstance();
+    return storage ?? (storage = await SharedPreferences.getInstance());
   }
 
   @override

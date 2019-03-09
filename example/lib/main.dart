@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_plugin_example/application_constants.dart';
 import 'package:flutter_plugin_example/diet_plan.dart';
-import 'package:parse_server_sdk/parse.dart';
+import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 void main() => runApp(new MyApp());
 
@@ -49,15 +49,15 @@ class _MyAppState extends State<MyApp> {
   }
 
   runTestQueries() {
-    //createItem();
-    //getAllItems();
-    //getAllItemsByName();
-    //getSingleItem();
+    createItem();
+    getAllItems();
+    getAllItemsByName();
+    getSingleItem();
     getConfigs();
-    //query();
-    //function();
-    //functionWithParameters();
-    //initUser();
+    query();
+    initUser();
+    function();
+    functionWithParameters();
   }
 
   void createItem() async {
@@ -138,26 +138,31 @@ class _MyAppState extends State<MyApp> {
   initUser() async {
     // All return type ParseUser except all
     var user =
-        ParseUser("TestFlutter", "TestPassword123", "TestFlutterSDK@gmail.com");
+        ParseUser("TestFlutter", "TestPassword123", "phill.wiggins@gmail.com");
     var response = await user.signUp();
     if (response.success) user = response.result;
 
     response = await user.login();
     if (response.success) user = response.result;
 
-    user = null;
-    // Best practice for starting the app. This will check for a valid user
-    user = await ParseUser.currentUser();
-    await user.logout();
-    user = await ParseUser.currentUser();
-
-    response = await user.getCurrentUserFromServer();
-    if (response.success) user = response.result;
-
     response = await user.requestPasswordReset();
     if (response.success) user = response.result;
 
     response = await user.verificationEmailRequest();
+    if (response.success) user = response.result;
+
+    user = null;
+    // Best practice for starting the app. This will check for a valid user
+    user = await ParseUser.currentUser();
+    await user.logout();
+
+    user =
+        ParseUser("TestFlutter", "TestPassword123", "phill.wiggins@gmail.com");
+    response = await user.login();
+    if (response.success) user = response.result;
+
+    response = await ParseUser.getCurrentUserFromServer(
+        token: user.get(keyHeaderSessionToken));
     if (response.success) user = response.result;
 
     response = await user.save();
@@ -177,13 +182,18 @@ class _MyAppState extends State<MyApp> {
     if (apiResponse.success) user = response.result;
   }
 
-  function() {
-    var function = ParseCloudFunction('testFunction');
-    function.execute();
+  function() async {
+    var function = ParseCloudFunction('hello');
+    var result = await function.executeObjectFunction<ParseObject>();
+    if (result.success) {
+      if (result.result is ParseObject) {
+        print((result.result as ParseObject).className);
+      }
+    }
   }
 
   functionWithParameters() async {
-    var function = ParseCloudFunction('testFunction');
+    var function = ParseCloudFunction('hello');
     var params = {'plan': 'paid'};
     function.execute(parameters: params);
   }
