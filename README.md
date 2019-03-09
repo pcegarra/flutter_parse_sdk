@@ -13,7 +13,7 @@ Want to get involved? Join our Slack channel and help out! (http://flutter-parse
 To install, either add to your pubspec.yaml
 ```
 dependencies:  
-    parse_server_sdk: ^1.0.12
+    parse_server_sdk: ^1.0.15
 ```
 or clone this repository and add to your project. As this is an early development with multiple contributors, it is probably best to download/clone and keep updating as an when a new feature is added.
 
@@ -93,6 +93,12 @@ The features available are:-
  * NotEqualTo
  * StartsWith
  * EndsWith
+ * Exists
+ * Near
+ * WithinMiles
+ * WithinKilometers
+ * WithinRadians
+ * WithinGeoBox
  * Regex
  * Order
  * Limit
@@ -120,6 +126,8 @@ The features available are:-
  * Complex queries as shown above
  * Pin
  * Plenty more
+ * Counters
+ * Array Operators
 
 ## Custom Objects
 You can create your own ParseObjects or convert your existing objects into Parse Objects by doing the following:
@@ -166,6 +174,29 @@ and to retrieve it
 var dietPlan = DietPlan().fromPin('OBJECT ID OF OBJECT');
 ```
 
+## Increment Counter values in objects
+
+Retrieve it, call
+
+```
+var response = await dietPlan.increment("count", 1);
+
+```
+
+## Array Operator in objects
+
+Retrieve it, call
+
+```
+var response = await dietPlan.add("listKeywords", ["a", "a","d"]);
+
+var response = await dietPlan.addUnique("listKeywords", ["a", "a","d"]);
+
+var response = await dietPlan.remove("listKeywords", ["a"]);
+
+```
+
+
 ## Users
 
 You can create and control users just as normal using this SDK.
@@ -195,6 +226,7 @@ Other user features are:-
  * Get all users
  * Save
  * Destroy user
+ * Queries 
 
 ## Config
 
@@ -212,10 +244,12 @@ ParseConfig().addConfig('TestConfig', 'testing');
 
 Main:
 * Users
+* Installation
 * Objects
 * Queries
 * LiveQueries
 * GeoPoints
+* Files
 * Persistent storage
 * Debug Mode - Logging API calls
 * Manage Session ID's tokens
@@ -223,12 +257,14 @@ Main:
 User:
 * Create       
 * Login
+* Logout
 * CurrentUser
 * RequestPasswordReset
 * VerificationEmailRequest
 * AllUsers
 * Save
 * Destroy
+* Queries
 
 Objects:
 * Create new object

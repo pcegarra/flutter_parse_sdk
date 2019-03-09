@@ -1,7 +1,7 @@
 part of flutter_parse_sdk;
 
 // Library
-const String keySdkVersion = '1.0.12';
+const String keySdkVersion = '1.0.15';
 const String keyLibraryName = 'Flutter Parse SDK';
 
 // End Points
@@ -9,6 +9,7 @@ const String keyEndPointUserName = '/users/me';
 const String keyEndPointLogin = '/login';
 const String keyEndPointLogout = '/logout';
 const String keyEndPointUsers = '/users';
+const String keyEndPointSessions = '/sessions';
 const String keyEndPointVerificationEmail = '/verificationEmailRequest';
 const String keyEndPointRequestPasswordReset = '/requestPasswordReset';
 const String keyEndPointClasses = '/classes/';
@@ -28,6 +29,8 @@ const String keyVarAcl = 'ACL';
 // Classes
 const String keyClassMain = 'ParseMain';
 const String keyClassUser = '_User';
+const String keyClassSession = '_Session';
+const String keyClassInstallation = '_Installation';
 const String keyGeoPoint = 'GeoPoint';
 const String keyFile = 'File';
 
@@ -47,3 +50,4 @@ const String keyParamSessionToken = 'sessionToken';
 // Storage
 const String keyParseStoreBase = 'flutter_parse_sdk_';
 const String keyParseStoreUser = "${keyParseStoreBase}user";
+const String keyParseStoreInstallation = "${keyParseStoreBase}installation";
